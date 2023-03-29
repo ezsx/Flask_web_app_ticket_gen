@@ -1,0 +1,257 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #FFFFFF;
+    background-color: #000000;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, button {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #FFFFFF;
+    padding: 5px;
+}
+
+th {
+    font-size: 16px;
+    text-align: left;
+}
+
+td {
+    font-size: 14px;
+}
+
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+input, button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+h1, h2 {
+    text-align: center;
+    background-color: #333;
+    padding: 8px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+h2{
+    font-size: 18px;
+    width: 100%;
+}
+
+
+.ticket {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ticket h3 {
+    color: darkgray;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.ticket p {
+    color: black;
+    margin-bottom: 5px;
+}
+
+.ticket:last-child {
+    margin-bottom: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+
+body {
+    background-color: #f1f1f1;
+    font-family: Arial, sans-serif;
+}
+
+.widget-container {
+    background-color: #3c3c3c;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.widget-container h1 {
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.green-submit{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.green-submit:hover{
+    background-color: #45a049;
+}
+
+label {
+    color: #fff;
+}
+
+/* ... your existing CSS ... */
+
+/* Update the background color of the editing window */
+.question-edit-container {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Apply styles to the question input field */
+.question-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Apply styles to the question difficulty input field */
+.question-difficulty-input {
+    width: 3rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Style the submit button */
+.submit-button {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* ... Your existing styles ... */
+
+.question-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+textarea {
+    flex-grow: 1;
+    resize: none; /* Disables manual resizing */
+    margin-right: 10px;
+}
+
+.question-difficulty {
+    width: 35px;
+    border-radius: 0.25rem;
+}
