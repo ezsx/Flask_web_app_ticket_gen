@@ -1,38 +1,32 @@
 import re
 from docx import Document
-
 def read_questions_from_docx(file_path):
-    doc = Document(file_path)
-    questions = {'theoretical': [], 'practical': []}
+    questions = []
+    question_pattern = re.compile(r'Task \d+')
 
-    for paragraph in doc.paragraphs:
-        text = paragraph.text.strip()
-        if re.match(r'^Theoretical:', text):
-            question_type = 'theoretical'
-        elif re.match(r'^Practical:', text):
-            question_type = 'practical'
-        elif text:
-            questions[question_type].append({'text': text, 'difficulty': None})
+    # Read the Word document
+    doc = Document(file_path)
+    file_content = '\n'.join([para.text for para in doc.paragraphs])
+
+    # Detect question type
+    if "Theoretical" in file_content:
+        question_type = 'theoretical'
+        file_content = file_content.replace("Theoretical", "")
+    elif "Practical" in file_content:
+        question_type = 'practical'
+        file_content = file_content.replace("Practical", "")
+    else:
+        question_type = 'unknown'
+
+    question_texts = question_pattern.split(file_content)[1:]  # Ignore the first element, which is the text before the first question
+
+    for question_text in question_texts:
+        question_text = question_text.strip()
+        question = {
+            'type': question_type,
+            'text': question_text,
+            'difficulty': 1
+        }
+        questions.append(question)
 
     return questions
-
-def read_questions_from_file(file_path):
-    doc = Document(file_path)
-    questions = {'theoretical': [], 'practical': []}
-    current_section = None
-
-    for paragraph in doc.paragraphs:
-        if paragraph.text.lower().startswith('theoretical'):
-            current_section = 'theoretical'
-        elif paragraph.text.lower().startswith('practical'):
-            current_section = 'practical'
-        elif current_section:
-            question = {
-                'text': paragraph.text,
-                'difficulty': 0
-            }
-            questions[current_section].append(question)
-
-    return questions
-
-

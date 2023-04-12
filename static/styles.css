@@ -112,6 +112,9 @@ input[type="file"] {
     cursor: pointer;
 }
 
+input[type="number"] {
+    width: 6%;
+}
 
 body {
     background-color: #f1f1f1;

@@ -7,60 +7,46 @@
 </head>
 <body>
 
-
 {% block content %}
     <div class="widget-container">
-
         <h1 style="width: 90%">Exam Questions</h1>
-
         <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <input type="file" id="file" name="file" accept=".docx">
             </div>
             <input type="submit" value="Upload" style="width: 30%">
         </form>
-
-        <form id="edit_questions_form" method="POST" action="{{ url_for('edit_questions') }}"
-              enctype="application/json">
-            <h2>Theoretical Questions</h2>
-            {% for question in questions['theoretical'] %}
+        <form id="edit_questions_form" method="POST" action="{{ url_for('edit_questions') }}">
+            {% set displayed_headings = {'theoretical': False, 'practical': False} %}
+            {% for question in questions %}
+                {% if not displayed_headings[question.type] %}
+                    <h2>{{ question.type.capitalize() }} Questions</h2>
+                    {% set displayed_headings = displayed_headings.update({question.type: True}) %}
+                {% endif %}
                 <div class="question-container">
-                    <input type="hidden" name="question_type_{{ loop.index0 }}" value="theoretical">
+                    <input type="hidden" name="question_type_{{ loop.index0 }}" value="{{ question.type }}">
                     <input type="hidden" name="question_index_{{ loop.index0 }}" value="{{ loop.index0 }}">
                     <textarea name="question_text_{{ loop.index0 }}" required>{{ question.text }}</textarea>
-                    <input type="number" class="question-difficulty" name="question_difficulty_{{ loop.index0 }}"
-                           value="{{ question.difficulty }}" min="1" max="10" required>
+                    <input type="number" min="1" max="10" step="1" value="{{ question.difficulty }}"
+                           name="question_difficulty_{{ loop.index0 }}">
                 </div>
             {% endfor %}
-            <h2>Practical Questions</h2>
-            {% for question in questions['practical'] %}
-                <div class="question-container">
-                    <input type="hidden" name="question_type_{{ loop.index0 + questions['theoretical']|length }}"
-                           value="practical">
-                    <input type="hidden" name="question_index_{{ loop.index0 + questions['theoretical']|length }}"
-                           value="{{ loop.index0 }}">
-                    <textarea name="question_text_{{ loop.index0 + questions['theoretical']|length }}"
-                              required>{{ question.text }}</textarea>
-                    <input type="number" class="question-difficulty"
-                           name="question_difficulty_{{ loop.index0 + questions['theoretical']|length }}"
-                           value="{{ question.difficulty }}" min="1" max="10" required>
-                </div>
-            {% endfor %}
-
             <button type="submit" class="submit-button" style="width: 40%">Update Questions</button>
         </form>
 
 
-        <h2 style="width: 72%">Generate Tickets</h2>
+        <h2 style="width: 50%; margin: auto">Generate Tickets</h2>
         <form method="POST" action="{{ url_for('generate_tickets') }}">
-            <label for="target_difficulty">Target Difficulty (optional):</label>
-            <input type="number" name="target_difficulty" min="3" max="30" style="width: 70%;">
-            <label for="num_tickets">Number of Tickets:</label>
-            <input type="number" name="num_tickets" min="1" required style="width: 70%;">
+            <label for="num_tickets" style="margin-top: 10px">Number of Tickets:</label>
+            <input type="number" name="num_tickets" min="1" required style="width: 30%;">
+            <label for="target_difficulty">Target Difficulty (Optional):</label>
+            <input type="number" name="target_difficulty" min="1" max="10" step="1" style="width: 30%;">
             <button type="submit" class="submit-button" style="width: 40%">Generate</button>
         </form>
+
     </div>
 {% endblock %}
+
 <script>
     document.getElementById("edit_questions_form").addEventListener("submit", async function (event) {
         event.preventDefault(); // Add this line to prevent default form submission
@@ -92,7 +78,6 @@
     });
 
 </script>
-
-
 </body>
 </html>
+

@@ -1,71 +1,72 @@
+{% extends "base.html" %}
 <!doctype html>
 <html>
 <head>
     <title>Generated Tickets</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-
 <body>
-{% for ticket in tickets %}
-    <div id="ticket-display-{{ ticket.id }}" class="ticket">
-        <h3>Ticket {{ loop.index }}</h3>
-        {% for question in ticket.content %}
-            <p>{{ loop.index }}. {{ question.text }} (Difficulty: {{ question.difficulty }})</p>
-        {% endfor %}
+{% block content %}
+    {% for ticket in tickets %}
+        <div id="ticket-display-{{ ticket.id }}" class="ticket">
+            <h3>Ticket {{ loop.index }}</h3>
+            {% for question in ticket.content %}
+                <p>{{ loop.index }}. {{ question.text|safe }} (Difficulty: {{ question.difficulty }})</p>
+            {% endfor %}
+        </div>
+        <div id="ticket-data-{{ ticket.id }}" class="ticket-data" style="display:none;">
+            {{ ticket.content|tojson }}
+        </div>
+    {% endfor %}
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <button onclick="saveTicketsToServer()" class="green-submit" style="width: 30%">Save and
+            Download Tickets
+        </button>
     </div>
-    <div id="ticket-data-{{ ticket.id }}" class="ticket-data" style="display:none;">
-        {{ ticket.content|tojson }}
-    </div>
-{% endfor %}
+    <script>
+        function saveTicketsToServer() {
+            const numberOfTickets = {{ tickets|length }};
+            let ticketsData = [];
 
+            for (let i = 0; i < numberOfTickets; i++) {
+                const ticketId = "ticket-data-" + i;
+                const ticketContent = JSON.parse(document.getElementById(ticketId).textContent);
+                ticketsData.push(ticketContent);
+            }
 
-<div style="display: flex; flex-direction: column; align-items: center;">
-    <button onclick="saveTicketsToServer()" class="green-submit" style="width: 30%">Save and
-        Download Tickets
-    </button>
-</div>
-<script>
-    function saveTicketsToServer() {
-        const numberOfTickets = {{ tickets|length }};
-        let ticketsData = [];
-
-        for (let i = 0; i < numberOfTickets; i++) {
-            const ticketId = "ticket-data-" + i;
-            const ticketContent = JSON.parse(document.getElementById(ticketId).textContent);
-            ticketsData.push(ticketContent);
+            // Send the ticketsData to the server using an AJAX request
+            fetch('/save_tickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ticketsData: ticketsData})
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob();
+                    } else {
+                        throw new Error("Failed to save tickets");
+                    }
+                })
+                .then(blob => {
+                    // Create an anchor element with a download attribute and trigger a
+                    // click event to download the file
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'tickets.docx';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    // Handle errors that occur during the AJAX request
+                    console.error("Error saving tickets:", error)
+                });
         }
+    </script>
+{% endblock %}
 
-
-        // Send the ticketsData to the server using an AJAX request
-        fetch('/save_tickets', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ticketsData: ticketsData})
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.blob();
-                } else {
-                    throw new Error("Failed to save tickets");
-                }
-            })
-            .then(blob => {
-                // Create an anchor element with a download attribute and trigger a click event to download the file
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'tickets.docx';
-                a.click();
-                URL.revokeObjectURL(url);
-            })
-            .catch(error => {
-                // Handle errors that occur during the AJAX request
-                console.error("Error saving tickets:", error);
-            });
-    }
-
-</script>
 </body>
 </html>
